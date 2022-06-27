@@ -1,12 +1,14 @@
 const XLSX = require("xlsx");
 const fs = require("fs");
-const HTMLParser = require("node-html-parser");
 const cheerio = require("cheerio");
 const cheerioTableparser = require("cheerio-tableparser");
 
 const files = fs
-  .readdirSync("./src/HTML")
-  .filter((file) => file != ".DS_Store");
+  .readdirSync("./src/HTML", { withFileTypes: true })
+  .filter((file) => file != ".DS_Store" && file.isFile())
+  .map((file) => file.name);
+
+console.log(files);
 
 let drivers = [];
 
