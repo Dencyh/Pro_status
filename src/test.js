@@ -14,26 +14,22 @@ files.forEach((file, index) => {
     const html = fs.readFileSync(`./src/Test htlm/${file}`).toString();
     const root = parse(html)
 
-    let status = root.querySelectorAll('.NativeTable_td__WGF6R:nth-child(10n)').map((element) => {
-      if (element.innerText == '') {
-          return 'пустая строка'
+    let status = root.querySelectorAll('.Text_typography_caption.NativeTable_td__WGF6R:nth-child(10n)').map((element) => {
+   console.log(element.innerText.replace('Ford Transit', ''))
+
+     /* if (element === 0) {
+          return 'null'
       } else {
-          return element.innerText
-      }
+         /!* return element.querySelector('.CarCell_number__EVLRr')*!/
+          return 'есть ребенок'
+      }*/
 
     })
 
+    console.log(status)
     console.log(status.length)
 
 
 
 })
-
-
-
-
-//const root = parse(fs.readFileSync('./src/HTML/' + files[1]).toString());
-//console.log(fs.readFileSync('./src/HTML/' + files[1]).toString())
-
-//console.log(root.querySelector('.DriverLink_container__35QA8').innerText);
 
