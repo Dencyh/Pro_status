@@ -1,7 +1,6 @@
-const XLSX = require("xlsx");
-const fs = require("fs");
-const cheerio = require("cheerio");
-const cheerioTableparser = require("cheerio-tableparser");
+import XLSX from "xlsx";
+import { parse } from 'node-html-parser';
+import fs from "fs";
 
 const files = fs
   .readdirSync("./src/HTML", { withFileTypes: true })
@@ -15,38 +14,25 @@ let drivers = [];
 files.forEach((file, index) => {
   const html = fs.readFileSync(`./src/HTML/${file}`).toString();
 
-  const $ = cheerio.load(html);
+  const root = parse(html)
 
-  cheerioTableparser($);
+
 
   /* Status */
-  let status = $(".Table_status__3tCyu .DriverStatusCell_badge__BtkR_")
-    .toArray()
-    .map((x) => {
-      return $(x).text();
-    });
+  let status = root.querySelectorAll(".Table_status__3tCyu .DriverStatusCell_badge__BtkR_")
+    .map(element => element.innerText)
 
   /* Number */
-  let numbers = $(".CallSignCell_cell__bUu0J")
-    .toArray()
-    .map((x) => {
-      return $(x).text();
-    });
-  /*   let numbers = numbersElements.map((element) => element.innerText); */
+  let numbers = root.querySelectorAll(".CallSignCell_cell__bUu0J")
+    .map(element => element.innerText)
 
   /* Names */
-  let names = $(".Table_name__-P4ig .DriverLink_container__35QA8")
-    .toArray()
-    .map((x) => {
-      return $(x).text();
-    });
+  let names = root.querySelectorAll(".Table_name__-P4ig .DriverLink_container__35QA8")
+     .map(element => element.innerText)
 
   /* Test space removal */
-  let namesClean = $(".Table_name__-P4ig .DriverLink_container__35QA8")
-    .toArray()
-    .map((x) => {
-      return $(x).text();
-    })
+  let namesClean = root.querySelectorAll(".Table_name__-P4ig .DriverLink_container__35QA8")
+    .map(element => element.innerText)
     .map((name) => name.slice(0, name.length - 1));
 
   let namesShort = names
@@ -54,14 +40,12 @@ files.forEach((file, index) => {
     .map((name) => name[0] + " " + name[1]);
 
   /* Phone */
-  let phones = $(".не работает123123123123")
-    .toArray()
-    .map((x) => {
-      return $(x).text();
-    });
+  let phones = root.querySelectorAll(".не работает123123123123")
+
 
   /* Park */
-  let company = $(".ParkSelector_option__Gq6k9 .Text_typography_body").text();
+  let company =  root.querySelectorAll(".ParkSelector_option__Gq6k9")[0];
+  console.log(company)
 
   /* Pushing data to object */
   status.forEach((status, index) => {
