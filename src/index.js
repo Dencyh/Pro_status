@@ -1,17 +1,17 @@
 import XLSX from "xlsx";
 import { parse } from 'node-html-parser';
 import fs from "fs";
+import * as companies from './companies.json' assert {type: "json"}
 
 const files = fs
   .readdirSync("./src/HTML", { withFileTypes: true })
   .filter((file) => file.name.includes(".html") && file.isFile())
   .map((file) => file.name);
 
-console.log(files);
 
 let drivers = [];
 
-files.forEach((file, index) => {
+files.forEach((file) => {
   const html = fs.readFileSync(`./src/HTML/${file}`).toString();
 
   const root = parse(html)
@@ -40,13 +40,20 @@ files.forEach((file, index) => {
     .map((name) => name[0] + " " + name[1]);
 
   /* Phone */
-  let phones = root.querySelectorAll('td.Text_typography_caption:nth-child(5n) > a').forEach(element => console.log(element.classList))
-/*      .filter(element => element.classList === '')
-      .map(element => element.innerText)*/
+  let phones = root.querySelectorAll('td.Text_typography_caption:nth-child(5n)')
+      .filter((element, index) => index % 2 === 0)
+      .map(element => element.innerText)
 
+
+
+  /* Plate number */
+  let plates = root.querySelectorAll('td.Text_typography_caption:nth-child(5n)')
+      .filter((element, index) => index % 2 !== 0)
+      .map(element => element.innerText.replace('Ford Transit', ''))
 
   /* Park */
-  let company =  root.querySelector(".Text.Text_overflow_ellipsis.Text_typography_body").innerText
+  let companyRaw =  root.querySelector(".Text.Text_overflow_ellipsis.Text_typography_body").innerText
+  let company = companies.default[companyRaw]
 
 
   /* Pushing data to object */
@@ -57,12 +64,12 @@ files.forEach((file, index) => {
       name: namesClean[index],
       nameShort: namesShort[index],
       phone: phones[index],
+      plate: plates[index],
       company: company,
     });
   });
 });
 
-/* console.log(drivers); */
 
 function getData(fileName, sheetName, folder) {
   const sheet = XLSX.readFile(`${folder}/${fileName}`, { cellDates: true })
