@@ -13,9 +13,11 @@ const files = fs
 files.forEach((file, index) => {
     const html = fs.readFileSync(`./src/Test htlm/${file}`).toString();
     const root = parse(html)
+    let company =  root.querySelector(".Text.Text_overflow_ellipsis.Text_typography_body").innerText
+    console.log(company)
 
     let status = root.querySelectorAll('.Text_typography_caption.NativeTable_td__WGF6R:nth-child(10n)').map((element) => {
-   console.log(element.innerText.replace('Ford Transit', ''))
+   //console.log(element.innerText.replace('Ford Transit', ''))
 
      /* if (element === 0) {
           return 'null'
@@ -26,8 +28,8 @@ files.forEach((file, index) => {
 
     })
 
-    console.log(status)
-    console.log(status.length)
+  /*  console.log(status)
+    console.log(status.length)*/
 
 
 

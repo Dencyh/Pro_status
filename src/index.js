@@ -4,7 +4,7 @@ import fs from "fs";
 
 const files = fs
   .readdirSync("./src/HTML", { withFileTypes: true })
-  .filter((file) => file != ".DS_Store" && file.isFile())
+  .filter((file) => file.name.includes(".html") && file.isFile())
   .map((file) => file.name);
 
 console.log(files);
@@ -40,12 +40,14 @@ files.forEach((file, index) => {
     .map((name) => name[0] + " " + name[1]);
 
   /* Phone */
-  let phones = root.querySelectorAll(".не работает123123123123")
+  let phones = root.querySelectorAll('td.Text_typography_caption:nth-child(5n) > a').forEach(element => console.log(element.classList))
+/*      .filter(element => element.classList === '')
+      .map(element => element.innerText)*/
 
 
   /* Park */
-  let company =  root.querySelectorAll(".ParkSelector_option__Gq6k9")[0];
-  console.log(company)
+  let company =  root.querySelector(".Text.Text_overflow_ellipsis.Text_typography_body").innerText
+
 
   /* Pushing data to object */
   status.forEach((status, index) => {
