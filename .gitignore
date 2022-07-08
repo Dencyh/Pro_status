@@ -6,3 +6,7 @@ node_modules
 ProStatus history
 ProStatus.xlsx
 index.exe
+move_and_run.command
+get-list.command
+/src/companies.json
+.idea/
