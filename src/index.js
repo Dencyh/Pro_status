@@ -21,7 +21,9 @@ files.forEach((file) => {
         .map(element => element.innerText)
 
     /* Number */
-    let numbers = root.querySelectorAll(".CallSignCell_cell__bUu0J")
+
+    let callsign = Array.from(root.querySelectorAll(".Table_callSign__jOAzL"))
+        .slice(1, 101)
         .map(element => element.innerText)
 
     /* Names */
@@ -44,7 +46,8 @@ files.forEach((file) => {
 
 
     /* Plate number */
-    let plates = root.querySelectorAll('td.Text_typography_caption:nth-child(5n)')
+
+    let plateNumbers = root.querySelectorAll('td.Text_typography_caption:nth-child(5n)')
         .filter((element, index) => index % 2 !== 0)
         .map(element => element.innerText.replace('Ford Transit', ''))
 
@@ -57,11 +60,11 @@ files.forEach((file) => {
     status.forEach((status, index) => {
         drivers.push({
             status: status,
-            number: numbers[index],
+            callsign: callsign[index],
             name: namesClean[index],
             nameShort: namesShort[index],
             phone: phones[index],
-            plate: plates[index],
+            plateNumbers: plateNumbers[index],
             company: company,
         });
     });
